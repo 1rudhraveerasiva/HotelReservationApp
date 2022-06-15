@@ -1,6 +1,7 @@
 package com.edu.HotelReservationApp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,6 +15,11 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 	List<Room> findByNoOfBed(String noOfBed);
 
 	List<Room> findByStatus(boolean status);
+
+	Optional<Room> findByRoomFare(double roomFare);
+
+
+
 
 
 }

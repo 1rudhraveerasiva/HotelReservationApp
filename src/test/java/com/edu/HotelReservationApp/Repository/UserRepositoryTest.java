@@ -1,6 +1,7 @@
 package com.edu.HotelReservationApp.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ public class UserRepositoryTest {
 @Test
 public void saveUserTest() {///testcase
 	
-    User user =userRepository.save(new User(4,"sri","devi","9438784267","sripriya","shree123","sri@gmail.com",264234234,"pondy"));
+    User user =userRepository.save(new User(352,"shree","devi","9465776267","shreepriya","shree123","sri@gmail.com",264234234,"pondy"));
 	
 	Assertions.assertThat(user.getUserId()).isGreaterThan(0);
 
@@ -47,4 +48,18 @@ public void updateUserTest() {
 	Assertions.assertThat(updated.getEmailId()).isEqualTo("rudh@gmail.com");
 	
 }
+@Test
+public void deleteUserTest() {
+User use = userRepository.findById(302L).get();
+userRepository.delete(use);
+
+User user = null;
+Optional<User> use1 = userRepository.findByContactNo("9465784267");
+if(use1.isPresent()) {
+	user = use1.get();
 }
+Assertions.assertThat(user).isNull();
+
+}
+}
+
