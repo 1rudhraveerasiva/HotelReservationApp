@@ -1,14 +1,16 @@
 package com.edu.HotelReservationApp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edu.HotelReservationApp.Exception.GivenIdNotFoundException;
+import com.edu.HotelReservationApp.Exception.NoRecordFoundException;
+import com.edu.HotelReservationApp.Exception.ResourceNotFoundException;
 import com.edu.HotelReservationApp.entity.Reservation;
 import com.edu.HotelReservationApp.repository.ReservationRepository;
-
-import exception.ResourceNotFoundException;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -25,18 +27,30 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<Reservation> getReservationList() {
 		// TODO Auto-generated method stub
-		return reservationRepos.findAll();
+	    List<Reservation> reserve = reservationRepos.findAll();
+	    if(reserve.isEmpty())
+	    	throw new NoRecordFoundException();
+	    else
+	    	return reserve;
 	}
 
 	@Override
 	public Reservation getReservationById(long resId) {
 		// TODO Auto-generated method stub
-		Reservation reservation = new Reservation();
+	/*	Reservation reservation = new Reservation();
 		reservation = reservationRepos.findById(resId).orElseThrow(
 				()->new ResourceNotFoundException("Reservation" , "Id",resId));
 		return reservation;
-	}
-
+	}*/
+		Optional<Reservation> reservation =reservationRepos.findById(resId);
+		if(reservation.isPresent()) {
+			return reservation.get();
+		}
+		else {
+			throw new GivenIdNotFoundException();	
+		}
+		}
+	
 	@Override
 	public Reservation updateReservation(long resId, Reservation reservation) {
 		// TODO Auto-generated method stub

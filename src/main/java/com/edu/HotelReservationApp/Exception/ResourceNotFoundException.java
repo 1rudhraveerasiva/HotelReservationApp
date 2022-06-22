@@ -1,4 +1,4 @@
-package exception;
+package com.edu.HotelReservationApp.Exception;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 

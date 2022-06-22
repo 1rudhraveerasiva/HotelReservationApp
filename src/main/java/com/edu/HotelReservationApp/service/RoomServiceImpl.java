@@ -1,15 +1,17 @@
 package com.edu.HotelReservationApp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edu.HotelReservationApp.Exception.GivenIdNotFoundException;
+import com.edu.HotelReservationApp.Exception.NoRecordFoundException;
+import com.edu.HotelReservationApp.Exception.ResourceNotFoundException;
 import com.edu.HotelReservationApp.entity.Room;
 import com.edu.HotelReservationApp.entity.User;
 import com.edu.HotelReservationApp.repository.RoomRepository;
-
-import exception.ResourceNotFoundException;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -26,17 +28,29 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public List<Room> getRoomList() {
 		// TODO Auto-generated method stub
-		return roomRepos.findAll();
+		List<Room> roo = roomRepos.findAll();
+		if(roo.isEmpty())
+			throw new NoRecordFoundException();
+		else
+			return roo;
 	}
 
 	@Override
 	public Room getRoomById(long roomId) {
 		// TODO Auto-generated method stub
-		Room room = new Room();
+		/*Room room = new Room();
 		room = roomRepos.findById(roomId).orElseThrow(
 				()->new ResourceNotFoundException("Room","Id",roomId));
 		return room;
-	}
+	}*/
+		Optional<Room> room=roomRepos.findById(roomId);
+		if(room.isPresent()) {
+			return room.get();
+		}
+		else {
+			throw new GivenIdNotFoundException();
+		}
+		}
 
 	@Override
 	public Room updateRoom(long roomId, Room room) {

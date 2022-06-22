@@ -1,15 +1,16 @@
 package com.edu.HotelReservationApp.service;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edu.HotelReservationApp.Exception.GivenIdNotFoundException;
+import com.edu.HotelReservationApp.Exception.NoRecordFoundException;
+import com.edu.HotelReservationApp.Exception.ResourceNotFoundException;
 import com.edu.HotelReservationApp.entity.User;
 import com.edu.HotelReservationApp.repository.UserRepository;
-
-import exception.ResourceNotFoundException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,18 +26,29 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getUserList() {
 		// TODO Auto-generated method stub
-		return userRepos.findAll();
+		List<User> use = userRepos.findAll();
+		if(use.isEmpty())
+			throw new NoRecordFoundException();
+		else
+			return use;
 	}
 
 	@Override
 	public User getUserById(long userId) {
 		// TODO Auto-generated method stub
-		User user = new User();
+		/*User user = new User();
 		user = userRepos.findById(userId).orElseThrow(
 				()->new ResourceNotFoundException("User","Id",userId));
 		return user;
-	}
-
+	}*/
+		Optional<User> user=userRepos.findById(userId);
+        if(user.isPresent()) {
+        	return user.get();
+        }
+        else {
+        	throw new GivenIdNotFoundException();
+        }
+        }
 	@Override
 	public User updateUser(long userId, User user) {
 		// TODO Auto-generated method stub
