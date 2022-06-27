@@ -50,7 +50,7 @@ public void updateUserTest() {
 }
 @Test
 public void deleteUserTest() {
-User use = userRepository.findById(302L).get();
+User use = userRepository.findById(502L).get();
 userRepository.delete(use);
 
 User user = null;

@@ -24,5 +24,6 @@ public interface UserService {
 	User getUserByEmailId(String emailId);
 
 	User getUserByUsername(String username);
+
 	
 }

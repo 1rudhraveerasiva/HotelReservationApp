@@ -10,7 +10,7 @@ import com.edu.HotelReservationApp.entity.User;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-	Room findByRoomNo(long roomNo);
+	Optional<Room> findByRoomNo(long roomNo);
 
 	List<Room> findByNoOfBed(String noOfBed);
 
