@@ -42,8 +42,8 @@ public class UserController {
 	public User UpdateUser(@PathVariable("userId")long userId,@RequestBody User user) {
 		return userService.updateUser(userId,user);
 	}
-	@DeleteMapping("/{uesrId}")
-	public ResponseEntity deleteUser(@PathVariable("userId")long userId) {
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<String> deleteUser(@PathVariable("userId")long userId) {
 		return new ResponseEntity<String>(userService.deleteUser(userId),HttpStatus.OK);
 	}
 	@GetMapping("/GetByFirstName/{firstName}")

@@ -37,11 +37,11 @@ public class ReservationController {
 		return reservationService.getReservationById(resId);
 	}
 	@PutMapping("/{resId}")
-	public Reservation UpdateReservation(@PathVariable("resId")long resId,@RequestBody Reservation reservation) {
+	public Reservation updateReservation(@PathVariable("resId")long resId,@RequestBody Reservation reservation) {
 	return reservationService.updateReservation(resId,reservation);
 	}
 	@DeleteMapping("/{resId}")
-	public ResponseEntity deleteReservation(@PathVariable("resId") long resId) {
+	public ResponseEntity<String> deleteReservation(@PathVariable("resId") long resId) {
 	return 	new ResponseEntity<String>(reservationService.deleteReservation(resId),HttpStatus.OK);
 	}
 	

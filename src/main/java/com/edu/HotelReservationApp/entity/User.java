@@ -12,7 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,16 +31,24 @@ public class User {
 	@Column(nullable = false)
 	@NotBlank(message= "Last name is mandatory")
 	private String lastName;
+	@Column(nullable=false)
+	@Size(min=10,max=17,message="Contact number should be between 10 and 17")
 	private String contactNo;
+	@Column(nullable= false,unique= true)
+	@NotBlank(message="Username is mandatory")
 	private String username;
+	@NotEmpty
+	@Size(min = 8, message = "password should have atleast 8 characters")
 	private String password;
 	@Column(nullable = false,unique=true)
 	@NotBlank(message="Email is mandatory")
 	@Email(message="Invalid email id")
 	private String emailId;
 	private long aadharNumber;
+	@Column(nullable=false)
+	@NotBlank(message="Address is mandatory")
 	private String fullAddress;
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user" , cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("user")
 	private List<Reservation> reservation;
 	
