@@ -1,7 +1,6 @@
 package com.edu.HotelReservationApp.entity;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,11 +27,18 @@ public class Reservation {
 	private long resId;
 	@Column(nullable=false)
 	@NotNull
-	@Size(max=3)
+	//@Size(max=3)
 	private int noOfGuest;
+	@Column(nullable=false)
+	@NotNull
 	private int stayDays;
-	private Date checkInDateTime;
-	private Date checkOutDateTime;
+	private LocalDateTime checkInDateTime;
+	private LocalDateTime checkOutDateTime;
+	
+	@PrePersist
+	public void addDateTime() {
+		this.checkInDateTime= LocalDateTime.now();
+	}
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
@@ -41,91 +48,110 @@ public class Reservation {
 	@OneToOne
 	@JoinColumn(name="roomId")
 	@JsonIgnoreProperties("reservation")
-	private Room room; 
-	
-	
-	public Room getRoom() {
-		return room;
-	}
-	public void setRoom(Room room) {
-		this.room = room;
-	}
-	public Reservation(long resId, int noOfGuest, int stayDays, Date checkInDateTime, Date checkOutDateTime, User user,
-			Room room) {
-		super();
-		this.resId = resId;
-		this.noOfGuest = noOfGuest;
-		this.stayDays = stayDays;
-		this.checkInDateTime = checkInDateTime;
-		this.checkOutDateTime = checkOutDateTime;
-		this.user = user;
-		this.room = room;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
+	private Room room;
+
 	public long getResId() {
 		return resId;
-		
 	}
-	public int getNoOfGuest() {
-		return noOfGuest;
-	}
-	public void setNoOfGuest(int noOfGuest) {
-		this.noOfGuest = noOfGuest;
-	}
-	public int getStayDays() {
-		return stayDays;
-	}
-	public void setStayDays(int stayDays) {
-		this.stayDays = stayDays;
-	}
-	public Date getCheckInDateTime() {
-		return checkInDateTime;
-	}
-	public void setCheckInDateTime(Date checkInDateTime) {
-		this.checkInDateTime = checkInDateTime;
-	}
-	public Date getCheckOutDateTime() {
-		return checkOutDateTime;
-	}
-	public void setCheckOutDateTime(Date checkOutDateTime) {
-		this.checkOutDateTime = checkOutDateTime;
-	}
+
 	public void setResId(long resId) {
 		this.resId = resId;
 	}
-	
-	public Reservation(long resId, int noOfGuest, int stayDays, Date checkInDateTime, Date checkOutDateTime,
-			User user) {
-		super();
-		this.resId = resId;
+
+	public int getNoOfGuest() {
+		return noOfGuest;
+	}
+
+	public void setNoOfGuest(int noOfGuest) {
 		this.noOfGuest = noOfGuest;
+	}
+
+	public int getStayDays() {
+		return stayDays;
+	}
+
+	public void setStayDays(int stayDays) {
 		this.stayDays = stayDays;
+	}
+
+	public LocalDateTime getCheckInDateTime() {
+		return checkInDateTime;
+	}
+
+	public void setCheckInDateTime(LocalDateTime checkInDateTime) {
 		this.checkInDateTime = checkInDateTime;
+	}
+
+	public LocalDateTime getCheckOutDateTime() {
+		return checkOutDateTime;
+	}
+
+	public void setCheckOutDateTime(LocalDateTime checkOutDateTime) {
 		this.checkOutDateTime = checkOutDateTime;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
 		this.user = user;
 	}
-	public Reservation(long resId, int noOfGuest, int stayDays, Date checkInDateTime, Date checkOutDateTime) {
-		super();
-		this.resId = resId;
-		this.noOfGuest = noOfGuest;
-		this.stayDays = stayDays;
-		this.checkInDateTime = checkInDateTime;
-		this.checkOutDateTime = checkOutDateTime;
+
+	public Room getRoom() {
+		return room;
 	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
 	public Reservation() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public Reservation(long resId, @NotNull @Size(max = 3) int noOfGuest, @NotNull int stayDays,
+			LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime, User user, Room room) {
+		super();
+		this.resId = resId;
+		this.noOfGuest = noOfGuest;
+		this.stayDays = stayDays;
+		this.checkInDateTime = checkInDateTime;
+		this.checkOutDateTime = checkOutDateTime;
+		this.user = user;
+		this.room = room;
+	}
+	
+
+	public Reservation(long resId, @NotNull @Size(max = 3) int noOfGuest, @NotNull int stayDays,
+			LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime) {
+		super();
+		this.resId = resId;
+		this.noOfGuest = noOfGuest;
+		this.stayDays = stayDays;
+		this.checkInDateTime = checkInDateTime;
+		this.checkOutDateTime = checkOutDateTime;
+	}
+
+	public Reservation(long resId, @NotNull @Size(max = 3) int noOfGuest, @NotNull int stayDays,
+			LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime, User user) {
+		super();
+		this.resId = resId;
+		this.noOfGuest = noOfGuest;
+		this.stayDays = stayDays;
+		this.checkInDateTime = checkInDateTime;
+		this.checkOutDateTime = checkOutDateTime;
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		return "Reservation [resId=" + resId + ", noOfGuest=" + noOfGuest + ", stayDays=" + stayDays
 				+ ", checkInDateTime=" + checkInDateTime + ", checkOutDateTime=" + checkOutDateTime + ", user=" + user
 				+ ", room=" + room + "]";
-	}
-	
+	} 
 }
+	
+	
+	

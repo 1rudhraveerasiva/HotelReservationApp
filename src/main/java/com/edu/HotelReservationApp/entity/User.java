@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +20,9 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="user_details")
+@Table(name="user_details",
+uniqueConstraints = {@UniqueConstraint(columnNames= {"username"}),
+		             @UniqueConstraint(columnNames= {"emailId"})})
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "user_details_seq")

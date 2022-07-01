@@ -2,6 +2,8 @@ package com.edu.HotelReservationApp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class RoomController {
 	RoomService roomService;
 	
 	@PostMapping
-	public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
+	public ResponseEntity<Room> saveRoom(@Valid @RequestBody Room room) {
 		return new ResponseEntity<Room>(roomService.saveRoom(room),HttpStatus.CREATED);
 	}
 	@GetMapping
@@ -37,7 +39,7 @@ public class RoomController {
 		return roomService.getRoomById(roomId);
 	}
 	@PutMapping("/{roomId}")
-	public Room updateRoom(@PathVariable("roomId") long roomId, @RequestBody Room room) {
+	public Room updateRoom(@PathVariable("roomId") long roomId,@Valid @RequestBody Room room) {
 		return roomService.updateRoom(roomId,room);
 }
 	@DeleteMapping("/{roomId}")

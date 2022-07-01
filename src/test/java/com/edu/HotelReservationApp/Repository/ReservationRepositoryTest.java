@@ -23,7 +23,7 @@ public class ReservationRepositoryTest {
     @Autowired
     private ReservationRepository reservationRepository;
     
-@Test
+/*@Test
 public void saveReservationTest() {///testcase
 	
 	Date d= new Date(2022,06,18);
@@ -32,7 +32,7 @@ public void saveReservationTest() {///testcase
     Reservation reservation =reservationRepository.save(new Reservation(302,3,5,d,d1));
 	
 	Assertions.assertThat(reservation.getResId()).isGreaterThan(0);
-}
+}*/
 
 @Test
 public void getReservationTest() {
