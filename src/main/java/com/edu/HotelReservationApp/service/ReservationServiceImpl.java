@@ -59,6 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
 				()->new ResourceNotFoundException("Reservation" , "Id",resId));
 	    reserv.setNoOfGuest(reservation.getNoOfGuest());
 	    reserv.setStayDays(reservation.getStayDays());
+	    reserv.setReserveDate(reservation.getReserveDate());
 	    reserv.setCheckInDateTime(reservation.getCheckInDateTime());
 	    reserv.setCheckOutDateTime(reservation.getCheckOutDateTime());
 	    reservationRepos.save(reserv);

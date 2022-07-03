@@ -1,5 +1,6 @@
 package com.edu.HotelReservationApp.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,21 +27,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Reservation {
        
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "reservation_details_seq")
+	@GeneratedValue(generator = "seq", strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="seq",initialValue=201)
 	private long resId;
 	@Column(nullable=false)
 	@NotNull
-	//@Size(max=3)
+	@Range(min=1,max=3,message="Maximum Guest is 3")
 	private int noOfGuest;
 	@Column(nullable=false)
 	@NotNull
 	private int stayDays;
+	private LocalDateTime reserveDate;
 	private LocalDateTime checkInDateTime;
 	private LocalDateTime checkOutDateTime;
-	
+	@DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME)
 	@PrePersist
 	public void addDateTime() {
-		this.checkInDateTime= LocalDateTime.now();
+		this.reserveDate= LocalDateTime.now();
+		//this.checkOutDateTime=checkInDateTime.plusDays(stayDays);
 	}
 	
 	@ManyToOne
@@ -49,7 +56,6 @@ public class Reservation {
 	@JoinColumn(name="roomId")
 	@JsonIgnoreProperties("reservation")
 	private Room room;
-
 	public long getResId() {
 		return resId;
 	}
@@ -72,6 +78,14 @@ public class Reservation {
 
 	public void setStayDays(int stayDays) {
 		this.stayDays = stayDays;
+	}
+
+	public LocalDateTime getReserveDate() {
+		return reserveDate;
+	}
+
+	public void setReserveDate(LocalDateTime reserveDate) {
+		this.reserveDate = reserveDate;
 	}
 
 	public LocalDateTime getCheckInDateTime() {
@@ -111,47 +125,52 @@ public class Reservation {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Reservation(long resId, @NotNull @Size(max = 3) int noOfGuest, @NotNull int stayDays,
-			LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime, User user, Room room) {
+	public Reservation(long resId, @NotNull @Range(min = 1, max = 3, message = "Maximum Guest is 3") int noOfGuest,
+			@NotNull int stayDays, LocalDateTime reserveDate, LocalDateTime checkInDateTime,
+			LocalDateTime checkOutDateTime, User user, Room room) {
 		super();
 		this.resId = resId;
 		this.noOfGuest = noOfGuest;
 		this.stayDays = stayDays;
+		this.reserveDate = reserveDate;
 		this.checkInDateTime = checkInDateTime;
 		this.checkOutDateTime = checkOutDateTime;
 		this.user = user;
 		this.room = room;
 	}
-	
 
-	public Reservation(long resId, @NotNull @Size(max = 3) int noOfGuest, @NotNull int stayDays,
-			LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime) {
-		super();
-		this.resId = resId;
-		this.noOfGuest = noOfGuest;
-		this.stayDays = stayDays;
-		this.checkInDateTime = checkInDateTime;
-		this.checkOutDateTime = checkOutDateTime;
+	@Override
+	public String toString() {
+		return "Reservation [resId=" + resId + ", noOfGuest=" + noOfGuest + ", stayDays=" + stayDays + ", reserveDate="
+				+ reserveDate + ", checkInDateTime=" + checkInDateTime + ", checkOutDateTime=" + checkOutDateTime
+				+ ", user=" + user + ", room=" + room + "]";
 	}
 
-	public Reservation(long resId, @NotNull @Size(max = 3) int noOfGuest, @NotNull int stayDays,
-			LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime, User user) {
+	public Reservation(long resId, @NotNull @Range(min = 1, max = 3, message = "Maximum Guest is 3") int noOfGuest,
+			@NotNull int stayDays, LocalDateTime reserveDate, LocalDateTime checkInDateTime,
+			LocalDateTime checkOutDateTime, User user) {
 		super();
 		this.resId = resId;
 		this.noOfGuest = noOfGuest;
 		this.stayDays = stayDays;
+		this.reserveDate = reserveDate;
 		this.checkInDateTime = checkInDateTime;
 		this.checkOutDateTime = checkOutDateTime;
 		this.user = user;
 	}
 
-	@Override
-	public String toString() {
-		return "Reservation [resId=" + resId + ", noOfGuest=" + noOfGuest + ", stayDays=" + stayDays
-				+ ", checkInDateTime=" + checkInDateTime + ", checkOutDateTime=" + checkOutDateTime + ", user=" + user
-				+ ", room=" + room + "]";
-	} 
-}
+	public Reservation(long resId, @NotNull @Range(min = 1, max = 3, message = "Maximum Guest is 3") int noOfGuest,
+			@NotNull int stayDays, LocalDateTime reserveDate, LocalDateTime checkInDateTime,
+			LocalDateTime checkOutDateTime) {
+		super();
+		this.resId = resId;
+		this.noOfGuest = noOfGuest;
+		this.stayDays = stayDays;
+		this.reserveDate = reserveDate;
+		this.checkInDateTime = checkInDateTime;
+		this.checkOutDateTime = checkOutDateTime;
+	}
 	
 	
-	
+
+	}

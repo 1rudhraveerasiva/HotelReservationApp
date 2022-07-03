@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -25,7 +26,8 @@ uniqueConstraints = {@UniqueConstraint(columnNames= {"username"}),
 		             @UniqueConstraint(columnNames= {"emailId"})})
 public class User {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "user_details_seq")
+	@GeneratedValue(generator="seq", strategy= GenerationType.AUTO)
+	@SequenceGenerator(name="seq", initialValue=1)
     private long userId;
 	@Column(nullable=false)
 	@NotNull
@@ -47,6 +49,8 @@ public class User {
 	@NotBlank(message="Email is mandatory")
 	@Email(message="Invalid email id")
 	private String emailId;
+	@Column(nullable = false,unique=true)
+	@NotBlank(message="Aadhar number is mandatory")
 	private long aadharNumber;
 	@Column(nullable=false)
 	@NotBlank(message="Address is mandatory")
