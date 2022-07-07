@@ -1,6 +1,8 @@
 package com.edu.HotelReservationApp.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,7 @@ import com.edu.HotelReservationApp.Exception.GivenIdNotFoundException;
 import com.edu.HotelReservationApp.Exception.GivenRecordNotFoundException;
 import com.edu.HotelReservationApp.Exception.GivenStatusNotFoundException;
 import com.edu.HotelReservationApp.Exception.NoRecordFoundException;
-import com.edu.HotelReservationApp.Exception.ResourceNotFoundException;
+import com.edu.HotelReservationApp.Exception.RecordAlreadyExistException;
 import com.edu.HotelReservationApp.entity.Room;
 import com.edu.HotelReservationApp.entity.User;
 import com.edu.HotelReservationApp.repository.RoomRepository;
@@ -24,7 +26,11 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public Room saveRoom(Room room) {
 		// TODO Auto-generated method stub
+		Optional<Room> roo=roomRepos.findById(room.getRoomId());
+		if(!roo.isPresent())
 		return roomRepos.save(room);
+		else
+			throw new RecordAlreadyExistException();
 	}
 
 	@Override
@@ -58,7 +64,7 @@ public class RoomServiceImpl implements RoomService {
 	public Room updateRoom(long roomId, Room room) {
 		Room roo= new Room();
 		roo = roomRepos.findById(roomId).orElseThrow(
-				()-> new ResourceNotFoundException("Room","Id",roomId));
+				()-> new NoRecordFoundException());
 		roo.setRoomNo(room.getRoomNo());
 		roo.setNoOfBed(room.getNoOfBed());
 		roo.setRoomFare(room.getRoomFare());
@@ -72,7 +78,7 @@ public class RoomServiceImpl implements RoomService {
 		// TODO Auto-generated method stub
 		Room room = new Room();
 		room = roomRepos.findById(roomId).orElseThrow(
-				()->new ResourceNotFoundException("Room","Id",roomId));
+				()->new NoRecordFoundException());
 		roomRepos.deleteById(roomId);
 		return "Record is deleted successfully";
 	}
@@ -109,6 +115,15 @@ public class RoomServiceImpl implements RoomService {
 			throw new GivenStatusNotFoundException();
 		else
 			return roo;
+	}
+	@Override
+	public Map<Object, Object> getRoomGroupByStatus() {
+		List<Object[]> objects= roomRepos.getRoomGroupByStatus();
+		Map<Object, Object> map = new HashMap<>();
+		for(Object[] obj : objects) {
+			map.put(obj [0], obj[1]);
+		}
+		return map;
 	}
    
 }

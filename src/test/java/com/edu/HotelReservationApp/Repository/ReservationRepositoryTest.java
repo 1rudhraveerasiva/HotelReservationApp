@@ -1,6 +1,7 @@
 package com.edu.HotelReservationApp.Repository;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,21 +24,21 @@ public class ReservationRepositoryTest {
     @Autowired
     private ReservationRepository reservationRepository;
     
-/*@Test
+@Test
 public void saveReservationTest() {///testcase
 	
-	Date d= new Date(2022,06,18);
-	Date d1= new Date(2022,06,20);
+	LocalDateTime d= LocalDateTime.of(2022,06,18,14,50);
+	LocalDateTime d1= LocalDateTime.of(2022,06,20,14,50);
 	
-    Reservation reservation =reservationRepository.save(new Reservation(302,3,5,d,d1));
+    Reservation reservation =reservationRepository.save(new Reservation(902,2,2,d,d1, d1));
 	
 	Assertions.assertThat(reservation.getResId()).isGreaterThan(0);
-}*/
+}
 
 @Test
 public void getReservationTest() {
-	Reservation reservation = reservationRepository.findById(302L).get();
-	Assertions.assertThat(reservation.getResId()).isEqualTo(302L);
+	Reservation reservation = reservationRepository.findById(252L).get();
+	Assertions.assertThat(reservation.getResId()).isEqualTo(252L);
 }
 @Test
 public void getReservationListTest() {
@@ -47,7 +48,7 @@ public void getReservationListTest() {
 
 @Test
 public void updateReservationTest() {
-	Reservation reservation = reservationRepository.findById(53L).get();
+	Reservation reservation = reservationRepository.findById(902L).get();
 	reservation.setStayDays(2);
 	Reservation updated = reservationRepository.save(reservation);
 	
@@ -56,11 +57,11 @@ public void updateReservationTest() {
 }
 @Test
 public void deleteReservationTest() {
-Reservation res= reservationRepository.findById(252L).get();
+Reservation res= reservationRepository.findById(952L).get();
 reservationRepository.delete(res);
 
 Reservation reservation = null;
-Optional<Reservation> reservation1 = reservationRepository.findByNoOfGuest(6);
+Optional<Reservation> reservation1 = reservationRepository.findByNoOfGuest(1);
 
 
 if(reservation1.isPresent()) {

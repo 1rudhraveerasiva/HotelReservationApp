@@ -22,8 +22,8 @@ uniqueConstraints = {@UniqueConstraint(columnNames= {"roomNo"})})
 public class Room {
 
 	@Id
-	@GeneratedValue(generator ="seq",strategy = GenerationType.AUTO)
-	@SequenceGenerator(name="seq",initialValue=101)
+	@GeneratedValue(generator ="seq2",strategy = GenerationType.AUTO)
+	@SequenceGenerator(name="seq2",initialValue=101)
 	private long roomId;
 	private long roomNo;
 	@Column(nullable=false)
@@ -101,6 +101,14 @@ public class Room {
 	public String toString() {
 		return "Room [roomId=" + roomId + ", roomNo=" + roomNo + ", noOfBed=" + noOfBed + ", roomFare=" + roomFare
 				+ ", status=" + status + ", reservation=" + reservation + "]";
+	}
+
+	public Room(long roomId, long roomNo,
+			@Range(min = 1, max = 3, message = "No of bed allows only between 1 to 3") String noOfBed) {
+		super();
+		this.roomId = roomId;
+		this.roomNo = roomNo;
+		this.noOfBed = noOfBed;
 	}
 	
 }

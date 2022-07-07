@@ -13,7 +13,7 @@ import com.edu.HotelReservationApp.Exception.GivenIdNotFoundException;
 import com.edu.HotelReservationApp.Exception.GivenLastNameNotFoundException;
 import com.edu.HotelReservationApp.Exception.GivenUsernameNotFoundException;
 import com.edu.HotelReservationApp.Exception.NoRecordFoundException;
-import com.edu.HotelReservationApp.Exception.ResourceNotFoundException;
+import com.edu.HotelReservationApp.Exception.RecordAlreadyExistException;
 import com.edu.HotelReservationApp.entity.User;
 import com.edu.HotelReservationApp.repository.UserRepository;
 
@@ -25,7 +25,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User saveUser(User user) {
 		// TODO Auto-generated method stub
+		Optional<User> use =userRepos.findById(user.getUserId());
+		if(!use.isPresent())
 		return userRepos.save(user);
+		else
+			throw new RecordAlreadyExistException();
 	}
 
 	@Override
@@ -59,7 +63,7 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 	   User use = new User();
 		use = userRepos.findById(userId).orElseThrow(
-				()->new ResourceNotFoundException("User","Id",userId));
+				()->new NoRecordFoundException());
 		
 		use.setFirstName(user.getFirstName());
 		use.setLastName(user.getLastName());
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		 User user = new User();
 			user = userRepos.findById(userId).orElseThrow(
-					()->new ResourceNotFoundException("User","Id",userId));
+					()->new NoRecordFoundException());
 	     userRepos.deleteById(userId);
 	     return "Record is deleted successfully";
 		

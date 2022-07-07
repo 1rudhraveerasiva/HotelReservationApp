@@ -23,11 +23,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="user_details",
 uniqueConstraints = {@UniqueConstraint(columnNames= {"username"}),
-		             @UniqueConstraint(columnNames= {"emailId"})})
+		             @UniqueConstraint(columnNames= {"emailId"}),
+		             @UniqueConstraint(columnNames= {"aadharNumber"}),
+                     @UniqueConstraint(columnNames= {"contactNo"})})
 public class User {
 	@Id
-	@GeneratedValue(generator="seq", strategy= GenerationType.AUTO)
-	@SequenceGenerator(name="seq", initialValue=1)
+	@GeneratedValue(generator="seq1", strategy= GenerationType.AUTO)
+	@SequenceGenerator(name="seq1", initialValue=1)
     private long userId;
 	@Column(nullable=false)
 	@NotNull
@@ -37,55 +39,27 @@ public class User {
 	@NotBlank(message= "Last name is mandatory")
 	private String lastName;
 	@Column(nullable=false)
-	@Size(min=10,max=17,message="Contact number should be between 10 and 17")
+	@Size(min=10,max=10,message="Contact number should be between 10 and 17")
 	private String contactNo;
-	@Column(nullable= false,unique= true)
+	@Column(nullable= false)
 	@NotBlank(message="Username is mandatory")
 	private String username;
 	@NotEmpty
 	@Size(min = 8, message = "password should have atleast 8 characters")
 	private String password;
-	@Column(nullable = false,unique=true)
+	@Column(nullable = false)
 	@NotBlank(message="Email is mandatory")
 	@Email(message="Invalid email id")
 	private String emailId;
-	@Column(nullable = false,unique=true)
+	@Column(nullable = false)
 	@NotBlank(message="Aadhar number is mandatory")
-	private long aadharNumber;
+	private String aadharNumber;
 	@Column(nullable=false)
 	@NotBlank(message="Address is mandatory")
 	private String fullAddress;
 	@OneToMany(mappedBy="user" , cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("user")
 	private List<Reservation> reservation;
-	
-	
-	public User(long userId, String firstName, String lastName, String contactNo, String username, String password,
-			String emailId, long aadharNumber, String fullAddress, List<Reservation> reservation) {
-		super();
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.contactNo = contactNo;
-		this.username = username;
-		this.password = password;
-		this.emailId = emailId;
-		this.aadharNumber = aadharNumber;
-		this.fullAddress = fullAddress;
-		this.reservation = reservation;
-	}
-	
-	
-	public List<Reservation> getReservation() {
-		return reservation;
-	}
-
-
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
-	}
-
-
 	public long getUserId() {
 		return userId;
 	}
@@ -128,10 +102,10 @@ public class User {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	public long getAadharNumber() {
+	public String getAadharNumber() {
 		return aadharNumber;
 	}
-	public void setAadharNumber(long aadharNumber) {
+	public void setAadharNumber(String aadharNumber) {
 		this.aadharNumber = aadharNumber;
 	}
 	public String getFullAddress() {
@@ -140,8 +114,51 @@ public class User {
 	public void setFullAddress(String fullAddress) {
 		this.fullAddress = fullAddress;
 	}
-	public User(long userId, String firstName, String lastName, String contactNo, String username, String password,
-			String emailId, long aadharNumber, String fullAddress) {
+	public List<Reservation> getReservation() {
+		return reservation;
+	}
+	public void setReservation(List<Reservation> reservation) {
+		this.reservation = reservation;
+	}
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public User(long userId, @NotNull @NotBlank(message = "First name is mandatory ") String firstName,
+			@NotBlank(message = "Last name is mandatory") String lastName,
+			@Size(min = 10, max = 17, message = "Contact number should be between 10 and 17") String contactNo,
+			@NotBlank(message = "Username is mandatory") String username,
+			@NotEmpty @Size(min = 8, message = "password should have atleast 8 characters") String password,
+			@NotBlank(message = "Email is mandatory") @Email(message = "Invalid email id") String emailId,
+			@NotBlank(message = "Aadhar number is mandatory") String aadharNumber,
+			@NotBlank(message = "Address is mandatory") String fullAddress, List<Reservation> reservation) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.contactNo = contactNo;
+		this.username = username;
+		this.password = password;
+		this.emailId = emailId;
+		this.aadharNumber = aadharNumber;
+		this.fullAddress = fullAddress;
+		this.reservation = reservation;
+	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", contactNo="
+				+ contactNo + ", username=" + username + ", password=" + password + ", emailId=" + emailId
+				+ ", aadharNumber=" + aadharNumber + ", fullAddress=" + fullAddress + ", reservation=" + reservation
+				+ "]";
+	}
+	public User(long userId, @NotNull @NotBlank(message = "First name is mandatory ") String firstName,
+			@NotBlank(message = "Last name is mandatory") String lastName,
+			@Size(min = 10, max = 17, message = "Contact number should be between 10 and 17") String contactNo,
+			@NotBlank(message = "Username is mandatory") String username,
+			@NotEmpty @Size(min = 8, message = "password should have atleast 8 characters") String password,
+			@NotBlank(message = "Email is mandatory") @Email(message = "Invalid email id") String emailId,
+			@NotBlank(message = "Aadhar number is mandatory") String aadharNumber,
+			@NotBlank(message = "Address is mandatory") String fullAddress) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -153,16 +170,15 @@ public class User {
 		this.aadharNumber = aadharNumber;
 		this.fullAddress = fullAddress;
 	}
-	public User() {
+	public User(long userId, @NotNull @NotBlank(message = "First name is mandatory ") String firstName,
+			@NotBlank(message = "Last name is mandatory") String lastName,
+			@Size(min = 10, max = 17, message = "Contact number should be between 10 and 17") String contactNo) {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", contactNo="
-				+ contactNo + ", username=" + username + ", password=" + password + ", emailId=" + emailId
-				+ ", aadharNumber=" + aadharNumber + ", fullAddress=" + fullAddress + ", reservation=" + reservation
-				+ "]";
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.contactNo = contactNo;
 	}
 	
-}
+	
+	}

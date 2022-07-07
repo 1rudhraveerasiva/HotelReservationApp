@@ -24,15 +24,15 @@ public class UserRepositoryTest {
 @Test
 public void saveUserTest() {///testcase
 	
-    User user =userRepository.save(new User(352,"shree","devi","9465776267","shreepriya","shree123","sri@gmail.com",264234234,"pondy"));
+    User user =userRepository.save(new User(504,"shree","devi","9465776267","shreepriya","shree123","sri@gmail.com","24464234234","pondy"));
 	
 	Assertions.assertThat(user.getUserId()).isGreaterThan(0);
 
 }
 @Test
 public void getUserTest() {
-	User user = userRepository.findById(3L).get();
-	Assertions.assertThat(user.getUserId()).isEqualTo(3L);
+	User user = userRepository.findById(152L).get();
+	Assertions.assertThat(user.getUserId()).isEqualTo(152L);
 }
 @Test
 public void getUserListTest() {
@@ -41,20 +41,20 @@ public void getUserListTest() {
 }
 @Test
 public void updateUserTest() {
-	User user = userRepository.findById(2L).get();
-	user.setEmailId("rudh@gmail.com");
+	User user = userRepository.findById(153L).get();
+	user.setEmailId("arunpapa@gmail.com");
 	User updated = userRepository.save(user);
 	
-	Assertions.assertThat(updated.getEmailId()).isEqualTo("rudh@gmail.com");
+	Assertions.assertThat(updated.getEmailId()).isEqualTo("arunpapa@gmail.com");
 	
 }
 @Test
 public void deleteUserTest() {
-User use = userRepository.findById(502L).get();
+User use = userRepository.findById(503L).get();
 userRepository.delete(use);
 
 User user = null;
-Optional<User> use1 = userRepository.findByContactNo("9465784267");
+Optional<User> use1 = userRepository.findByContactNo("9262703231");
 if(use1.isPresent()) {
 	user = use1.get();
 }

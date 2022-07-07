@@ -1,5 +1,6 @@
 package com.edu.HotelReservationApp.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -46,5 +47,17 @@ public class ReservationController {
 	public ResponseEntity<String> deleteReservation(@PathVariable("resId") long resId) {
 	return 	new ResponseEntity<String>(reservationService.deleteReservation(resId),HttpStatus.OK);
 	}
-	
-}
+   @GetMapping("/GetCheckInInfo/{checkInDateTime}")
+    public List<Reservation> getReservationByCheckInDateTime(@PathVariable("checkInDateTime")String checkInDateTime) {
+    	return reservationService.getReservationByCheckInDateTime(LocalDateTime.parse(checkInDateTime));
+    }
+   @GetMapping("/GetReserveInfo/{reserveDate}")
+   public List<Reservation> getReservationDateByReserveDate(@PathVariable("reserveDate")String reserveDate) {
+        return reservationService.getReservationDateByReserveDate(LocalDateTime.parse(reserveDate));
+   }
+   @GetMapping("/getReservationByUserId/{userId}")
+   public List<Reservation> getReservationByUserId(@PathVariable("userId")long userId) {
+	   return reservationService.getReservationByUserId(userId);
+   }
+  
+   }    
