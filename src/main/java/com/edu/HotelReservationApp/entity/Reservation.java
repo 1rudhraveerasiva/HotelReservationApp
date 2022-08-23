@@ -36,7 +36,7 @@ public class Reservation {
 	@Range(min=1,max=3,message="Maximum Guest is 3")
 	private int noOfGuest;
 	@Column(nullable=false)
-	@NotNull(message="stayDay is mandatory")
+	@NotNull
 	private int stayDays;
 	private LocalDateTime reserveDate;
 	@Future(message="Enter Upcoming Date")

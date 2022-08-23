@@ -27,18 +27,18 @@ public class ReservationRepositoryTest {
 @Test
 public void saveReservationTest() {///testcase
 	
-	LocalDateTime d= LocalDateTime.of(2022,06,18,14,50);
-	LocalDateTime d1= LocalDateTime.of(2022,06,20,14,50);
+	LocalDateTime d= LocalDateTime.of(2022,07,18,14,50);
+	LocalDateTime d1= LocalDateTime.of(2022,07,20,14,50);
 	
-    Reservation reservation =reservationRepository.save(new Reservation(902,2,2,d,d1, d1));
+    Reservation reservation =reservationRepository.save(new Reservation(352,2,2,d,d1, d1));
 	
 	Assertions.assertThat(reservation.getResId()).isGreaterThan(0);
 }
 
 @Test
 public void getReservationTest() {
-	Reservation reservation = reservationRepository.findById(252L).get();
-	Assertions.assertThat(reservation.getResId()).isEqualTo(252L);
+	Reservation reservation = reservationRepository.findById(402L).get();
+	Assertions.assertThat(reservation.getResId()).isEqualTo(402L);
 }
 @Test
 public void getReservationListTest() {
@@ -48,16 +48,16 @@ public void getReservationListTest() {
 
 @Test
 public void updateReservationTest() {
-	Reservation reservation = reservationRepository.findById(902L).get();
-	reservation.setStayDays(2);
+	Reservation reservation = reservationRepository.findById(201L).get();
+	reservation.setStayDays(5);
 	Reservation updated = reservationRepository.save(reservation);
 	
-	Assertions.assertThat(updated.getStayDays()).isEqualTo(2);
+	Assertions.assertThat(updated.getStayDays()).isEqualTo(5);
 	
 }
 @Test
 public void deleteReservationTest() {
-Reservation res= reservationRepository.findById(952L).get();
+Reservation res= reservationRepository.findById(302L).get();
 reservationRepository.delete(res);
 
 Reservation reservation = null;

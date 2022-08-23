@@ -1,5 +1,4 @@
-package ServiceTest;
-
+package service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -37,17 +36,17 @@ public class ReservationServiceTest {
 	private Reservation reservation1;
 	private Reservation reservation2;
 	List<Reservation> reservationList;
-	LocalDateTime d=LocalDateTime.of(2022,07,15,15,58);
-	LocalDateTime d1=LocalDateTime.of(2022,07,20,15,58);
+	LocalDateTime d=LocalDateTime.of(2022,07,10,14,56);
+	LocalDateTime d1=LocalDateTime.of(2022,07,13,14,56);
 	
 	//Method to execute before each testcase execution
 	//before each testcase
 	@BeforeEach
 	public void setup() {
 		reservationList = new ArrayList<>();
-		reservation1 = new Reservation(12,2,5,d,d1);
+		reservation1 = new Reservation(11,2,3,d,d1);
 		
-		reservation2 = new Reservation(13,3,2,d,d1);
+		reservation2 = new Reservation(12,3,2,d,d1);
 		
 		reservationList.add(reservation1);
 		reservationList.add(reservation2);
@@ -65,7 +64,6 @@ public class ReservationServiceTest {
 		when(reservationRepos.save(reservation1)).thenReturn(reservation1);
 		//
 		Reservation savedReservation = reservationService.saveReservation(reservation1);
-		
 		System.out.println(savedReservation);
 		assertThat(savedReservation).isNotNull();
 	}
@@ -73,7 +71,7 @@ public class ReservationServiceTest {
 	//
 	@Test
 	public void givenExistingIdWhenSaveReservationThenThrowsException() {
-		Reservation reservation = new Reservation(12,2,3,d,d1);
+		Reservation reservation = new Reservation(11,2,3,d,d1);
 		when(reservationRepos.findById(reservation.getResId()))// 11 
 		      .thenReturn(Optional.of(reservation));// 11
 	
@@ -93,7 +91,7 @@ public class ReservationServiceTest {
 	}
 	@Test
 	public void givenIdThenShouldReturnReservationOfThatId() throws GivenIdNotFoundException{
-		when(reservationRepos.findById(12L)).thenReturn(Optional.ofNullable(reservation1));
+		when(reservationRepos.findById(11L)).thenReturn(Optional.ofNullable(reservation1));
 		assertThat(reservationService.getReservationById(reservation1.getResId())).isEqualTo(reservation1);
 	}
 	@Test
@@ -103,8 +101,8 @@ public class ReservationServiceTest {
 		
 	}
 	@Test
-	public void givenIdToDeleteThenThrowsException() {
-		long resId = 12L;
+	public void givenIdToDeleteNotExistThenThrowsException() {
+		long resId = 11L;
 		org.junit.jupiter.api.Assertions.assertThrows(NoRecordFoundException.class, () ->  {
 			reservationService.deleteReservation(resId);
 		});
@@ -113,29 +111,31 @@ public class ReservationServiceTest {
 	@DisplayName("JUnit test for updateReservation method")
     @Test
     public void givenReservationObject_whenUpdateReservation_thenReturnUpdatedReservation(){
-    	long resId = 12L;
+    	long resId = 11L;
         when(reservationRepos.save(reservation1)).thenReturn(reservation1);
         when(reservationRepos.findById(resId)).thenReturn(Optional.of(reservation1));
         reservation1.setNoOfGuest(4);
-        reservation1.setStayDays(0);
+        reservation1.setStayDays(3);
         reservation1.setCheckInDateTime(d);
         reservation1.setCheckOutDateTime(d1);
         Reservation updatedReservation = reservationService.updateReservation(resId, reservation1);
-       
+		System.out.println(updatedReservation);
+
         assertThat(updatedReservation.getNoOfGuest()).isEqualTo(4);
-        assertThat(updatedReservation.getStayDays()).isEqualTo(0);
+        assertThat(updatedReservation.getStayDays()).isEqualTo(3);
         assertThat(updatedReservation.getCheckInDateTime()).isEqualTo(d);
         assertThat(updatedReservation.getCheckOutDateTime()).isEqualTo(d1);
     }
     
     @Test
 	public void givenIdToUpdateNotExistThenThrowsException()  {
-		long resId = 12L;
+		long resId = 11L;
 		Reservation reservation = new Reservation();
-		reservation1.setNoOfGuest(4);
-		reservation1.setStayDays(0);
+		reservation1.setNoOfGuest(2);
+		reservation1.setStayDays(3);
 		reservation1.setCheckInDateTime(d);
         reservation1.setCheckOutDateTime(d1);   
+        
 	    org.junit.jupiter.api.Assertions.assertThrows(NoRecordFoundException.class, () -> {
 	    reservationService.updateReservation(resId, reservation);
 });
